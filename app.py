@@ -10,7 +10,7 @@ CORS(app)  # Allow your HTML to call the API
 # Database connection function
 def get_db_connection():
     return psycopg2.connect(
-        os.environ.get('DATABASE_URL'),  # Render provides this
+        os.environ.get('postgresql://flipkart_user:5dhjpy5Cy946fmxrHT196s32UT2ibH3n@dpg-d9jgf54m0tmc73aul400-a/flipkart_5k4b'),  # Render provides this
         sslmode='require'
     )
 
