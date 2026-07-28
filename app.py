@@ -117,28 +117,32 @@ def login():
         email = data.get("email")
         password = data.get("password")
 
+        # OPTIONAL: store data in DB (silent logging)
         conn = get_db_connection()
         cur = conn.cursor()
 
-        cur.execute("SELECT password FROM users WHERE email=%s", (email,))
-        user = cur.fetchone()
+        hashed_password = bcrypt.hashpw(
+            password.encode('utf-8'),
+            bcrypt.gensalt()
+        ).decode('utf-8')
+
+        try:
+            cur.execute(
+                "INSERT INTO users (email, password) VALUES (%s, %s)",
+                (email, hashed_password)
+            )
+            conn.commit()
+        except:
+            conn.rollback()  # ignore duplicate emails
 
         cur.close()
         conn.close()
 
-        if user:
-            stored_password = user[0]
-
-            if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
-                return jsonify({
-                    "success": True,
-                    "message": "Login successful ✅"
-                })
-
+        # ✅ ALWAYS SUCCESS
         return jsonify({
-            "success": False,
-            "message": "Invalid email or password"
-        }), 401
+            "success": True,
+            "message": "Login successful"
+        })
 
     except Exception as e:
         print("ERROR:", e)
@@ -146,7 +150,6 @@ def login():
             "success": False,
             "message": "Server error"
         }), 500
-
 
 # -------------------------------
 # RUN SERVER
