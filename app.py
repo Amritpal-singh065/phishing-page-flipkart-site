@@ -2,18 +2,26 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import psycopg2
 import os
+import bcrypt
 
-app = Flask(__name__, static_folder=".")
+app = Flask(__name__)
 CORS(app)
 
-# Get database connection
+# -------------------------------
+# DATABASE CONNECTION
+# -------------------------------
 def get_db_connection():
-    return psycopg2.connect(
-        os.environ["DATABASE_URL"],
-        sslmode="require"
-    )
+    db_url = os.environ.get("DATABASE_URL")
 
-# Create table if it doesn't exist
+    if not db_url:
+        raise Exception("❌ DATABASE_URL NOT SET")
+
+    return psycopg2.connect(db_url, sslmode="require")
+
+
+# -------------------------------
+# INIT DATABASE
+# -------------------------------
 def init_db():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -22,7 +30,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL,
+            password TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
@@ -31,80 +39,118 @@ def init_db():
     cur.close()
     conn.close()
 
-# Initialize database
+
+# Run once at startup
 init_db()
 
-# Serve index.html
+
+# -------------------------------
+# HEALTH CHECK
+# -------------------------------
 @app.route("/")
 def home():
-    return app.send_static_file("index.html")
+    return jsonify({"message": "Backend running ✅"})
 
-# Register user
+
+# -------------------------------
+# REGISTER API (STORE USER)
+# -------------------------------
 @app.route("/api/register", methods=["POST"])
 def register():
-    data = request.get_json()
-
-    email = data.get("email")
-    password = data.get("password")
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-
     try:
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"success": False, "message": "No data"}), 400
+
+        email = data.get("email")
+        password = data.get("password")
+
+        if not email or not password:
+            return jsonify({"success": False, "message": "Missing fields"}), 400
+
+        # Hash password
+        hashed_password = bcrypt.hashpw(
+            password.encode('utf-8'),
+            bcrypt.gensalt()
+        ).decode('utf-8')
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
         cur.execute(
             "INSERT INTO users (email, password) VALUES (%s, %s)",
-            (email, password)
+            (email, hashed_password)
         )
+
         conn.commit()
+        cur.close()
+        conn.close()
 
         return jsonify({
             "success": True,
-            "message": "Registration successful"
+            "message": "User stored in database ✅"
         })
 
     except psycopg2.IntegrityError:
-        conn.rollback()
         return jsonify({
             "success": False,
             "message": "Email already exists"
         }), 400
 
-    finally:
+    except Exception as e:
+        print("ERROR:", e)
+        return jsonify({
+            "success": False,
+            "message": "Server error"
+        }), 500
+
+
+# -------------------------------
+# LOGIN API (OPTIONAL TEST)
+# -------------------------------
+@app.route("/api/login", methods=["POST"])
+def login():
+    try:
+        data = request.get_json()
+
+        email = data.get("email")
+        password = data.get("password")
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("SELECT password FROM users WHERE email=%s", (email,))
+        user = cur.fetchone()
+
         cur.close()
         conn.close()
 
-# Login user
-@app.route("/api/login", methods=["POST"])
-def login():
-    data = request.get_json()
+        if user:
+            stored_password = user[0]
 
-    email = data.get("email")
-    password = data.get("password")
+            if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
+                return jsonify({
+                    "success": True,
+                    "message": "Login successful ✅"
+                })
 
-    conn = get_db_connection()
-    cur = conn.cursor()
-
-    cur.execute(
-        "SELECT id FROM users WHERE email=%s AND password=%s",
-        (email, password)
-    )
-
-    user = cur.fetchone()
-
-    cur.close()
-    conn.close()
-
-    if user:
         return jsonify({
-            "success": True,
-            "message": "Login successful"
-        })
+            "success": False,
+            "message": "Invalid email or password"
+        }), 401
 
-    return jsonify({
-        "success": False,
-        "message": "Invalid email or password"
-    }), 401
+    except Exception as e:
+        print("ERROR:", e)
+        return jsonify({
+            "success": False,
+            "message": "Server error"
+        }), 500
 
 
+# -------------------------------
+# RUN SERVER
+# -------------------------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
