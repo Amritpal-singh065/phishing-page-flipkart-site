@@ -668,7 +668,7 @@ try {
 
 
 
-const response = await fetch(`${API_URL}/login`, {
+const response = await fetch(`${API_URL}/api/login`, {
 
 
 
@@ -710,14 +710,9 @@ const data = await response.json();
 
 
 
-if(data.status === "success"){
-
-
-
-message.style.color="green";
-
-
-message.innerHTML="✓ " + data.message;
+if(data.success === true){
+    message.style.color="green";
+    message.innerHTML="✓ " + data.message;
 
 
 
