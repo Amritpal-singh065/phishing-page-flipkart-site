@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import psycopg2
 import os
@@ -45,11 +45,11 @@ init_db()
 
 
 # -------------------------------
-# HEALTH CHECK
+# SERVE LOGIN PAGE
 # -------------------------------
 @app.route("/")
 def home():
-    return jsonify({"message": "Backend running ✅"})
+    return send_file("index.html")
 
 
 # -------------------------------
